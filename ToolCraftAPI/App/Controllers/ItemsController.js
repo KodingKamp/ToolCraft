@@ -1,3 +1,6 @@
-app.get('/', (req, res) => {
-    res.send('Beluga Beluga')
-});
+exports.get_item = (req, res) => {
+    let item = {
+        name: "Not Yet Implemented"
+    }
+    res.send(item);
+};
