@@ -1,7 +1,12 @@
+// Dependencies
 const _Mongoose = require('mongoose');
-const _AppSettings = require('./appsettings');
 
-const url = _AppSettings.DBPath;
+// Models
+const TCError = require('../App/Models/Constants/TCError');
+const Messaging = require('../App/Models/Constants/Messaging');
+const ErrorMessage = require('../App/Models/Constants/ErrorMessages');
+
+const url = 'mongodb://localhost:27017/ToolCraftDB';
 
 const connect = async () => {
     try {
@@ -10,11 +15,12 @@ const connect = async () => {
             useUnifiedTopology: true
         })
         .then(_ => {
-            console.log('Successfully connected to MongoDB.');
+            console.log(Messaging.MongoConnectionAttemptSuccess);
         })
     }
     catch(err) {
-        console.error('A error occured while attempt to connect to Mongo', err);
+        let error = TCError(ErrorMessage.MongoConnectionAttempt, err)
+        console.error(error.message, error);
         process.exit(-1);
     }
 }

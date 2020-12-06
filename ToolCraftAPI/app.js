@@ -1,13 +1,18 @@
-const express = require("express");
+// Modules Dependencies
+const _express = require('express');
+const _mongo = require('./Config/db');
 
-const app = express();
+// Router Modules
+const _itemsRoute = require('./App/Routes/ItemsRoute');
+
+// App Constants
 const port = 8000;
+const app = _express();
 
-// Controller Modules
-const _itemsController = require('./App/Controllers/ItemsController');
+_mongo;
 
-app.get('/item', _itemsController.get_item);
+app.use('/api/item', _itemsRoute);
 
 app.listen(port, _ => {
-    console.log(`Server started on port ${port}`);
+    console.log(`Server started on at http://localhost:${port}`);
 })

@@ -1,1 +1,0 @@
-const DBPath = 'mongodb://localhost:27017/ToolCraftDB'
