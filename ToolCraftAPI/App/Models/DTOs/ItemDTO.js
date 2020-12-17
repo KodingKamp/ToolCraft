@@ -6,6 +6,7 @@ module.exports = item => {
     return {
         id: item.id,
         name: item.name,
-        pluralName: item.pluralName
+        pluralName: item.pluralName,
+        quantity: item.quantity
     }
 }

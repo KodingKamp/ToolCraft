@@ -8,12 +8,30 @@ const TCError = require('../Models/Constants/TCError');
 const ItemReponse = require('../Models/Responses/ItemResponse');
 const ItemDTO = require('../Models/DTOs/ItemDTO');
 const ErrorMessage = require('../Models/Constants/ErrorMessages');
+const Messaging = require('../Models/Constants/Messaging');
+const DBItem = require('../Models/Constants/DB_Item');
+const ItemsDTO = require('../Models/DTOs/ItemsDTO');
 
 // Mock DB Items
 const items = [
     ItemReponse({id: 000, name: 'Stick', pluralName: 'Sticks'}),
     ItemReponse({id: 001, name: 'Stone', pluralName: 'Stones'}),
-    ItemReponse({id: 002, name: 'Axe', pluralName: 'Axes'})];
+    ItemReponse({
+        id: 002, 
+        name: 'Axe', 
+        pluralName: 'Axes',
+        dismantledItems: [
+            {
+                id: 000,
+                quantity: 1
+            },
+            {
+                id: 001,
+                quantity: 1
+            }
+        ]
+    })
+];
 
 const find = index => {
     return items[index];
@@ -37,7 +55,7 @@ exports.GetItemSingle = (itemId) => {
     let tempItem;
 
     try {
-        tempItem = ItemDTO({...find(itemId)});
+        tempItem = {...find(itemId)};
         // console.debug(tempItem);
         
         if (!tempItem)
@@ -53,7 +71,7 @@ exports.GetItemSingle = (itemId) => {
     }
 
     return {
-        data: tempItem,
+        data: ItemDTO(tempItem),
         status: 200
     };
 }
@@ -62,7 +80,7 @@ exports.GetItemMany = (itemId, quantity) => {
     let tempItem;
 
     try {
-        tempItem = ItemDTO({...find(itemId)});
+        tempItem = {...find(itemId)};
         // console.debug(tempItem);
         
         if (!tempItem)
@@ -78,7 +96,36 @@ exports.GetItemMany = (itemId, quantity) => {
     }
 
     return {
-        data: tempItem,
+        data: ItemDTO(tempItem),
         status: 200
     };
+}
+
+exports.DismantleItem = (itemId) => {
+    let item = {...find(itemId)};
+    
+    if (Object.entries(item).length === 0)
+        throw ErrorMessage.ItemIdOutOfRange;
+
+    console.log(item);
+
+    if(!item.dismantledItems) {
+        return {
+            data: {error: TCError(Messaging.ItemCannotBeDismantled)},
+            status: 400
+        }
+    }
+
+    let tempItems = [];
+
+    for(let i of item.dismantledItems) {
+        let tempItem = ItemDTO({...find(i.id)});
+        tempItem.quantity = 1;
+        tempItems.push(tempItem);
+    }
+
+    return {
+        data: ItemsDTO(tempItems),
+        status: 200
+    }
 }
