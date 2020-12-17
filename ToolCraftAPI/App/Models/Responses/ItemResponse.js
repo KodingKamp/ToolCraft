@@ -7,6 +7,6 @@ module.exports = item => {
         id: item.id,
         name: item.name,
         pluralName: item.pluralName,
-        dismantledItems: item.dismantledItems ? item.dismantledItems : null
+        dismantlesTo: item.dismantlesTo
     }
 }
