@@ -2,7 +2,7 @@
 const _Mongoose = require('mongoose');
 
 // Models
-const TCError = require('../App/Models/Constants/TCError');
+const TCError = require('../App/Models/Responses/TCError');
 const Messaging = require('../App/Models/Constants/Messaging');
 const ErrorMessage = require('../App/Models/Constants/ErrorMessages');
 
