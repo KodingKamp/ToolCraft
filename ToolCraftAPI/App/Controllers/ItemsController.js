@@ -8,13 +8,13 @@ const TCError = require('../Models/Constants/TCError');
 const ItemRequest = require('../Models/Requests/ItemRequest');
 const ErrorMessage = require('../Models/Constants/ErrorMessages');
 
-exports.GetInitialItems = (req, res) => {
+exports.GetInitialItems = async (req, res) => {
     let responseObject = _itemRepo.GetInitialItems();
 
-    res.status(responseObject.status).send(responseObject.data);
+    await res.status(responseObject.status).send(responseObject.data);
 }
 
-exports.GetItem = (req, res) => {
+exports.GetItem = async (req, res) => {
     let item;
 
     try {
@@ -31,7 +31,7 @@ exports.GetItem = (req, res) => {
             throw ErrorMessage.ItemQuantityNotPossitiveNumber;
     }
     catch (err) {
-        res.status(400).send({
+        await res.status(400).send({
             error: TCError(ErrorMessage.InvalidParameters, err, item)
         });
         return;
@@ -41,5 +41,18 @@ exports.GetItem = (req, res) => {
                             ? _itemRepo.GetItemMany(item.id, item.quantity)
                             : _itemRepo.GetItemSingle(item.id);
     
-    res.status(responseObject.status).send(responseObject.data);
+    await res.status(responseObject.status).send(responseObject.data);
+}
+
+exports.DismantleItem = async (req, res) => {
+    try {
+        let itemId = parseInt(req.params.id);
+        let responseObject = _itemRepo.DismantleItem(itemId);
+
+        await res.status(responseObject.status).send(responseObject.data); 
+    } catch (err) {
+        res.status(500).send({
+            error: TCError(ErrorMessage.ItemDismantleError, err)
+        })
+    }
 }
