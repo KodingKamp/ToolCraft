@@ -39,7 +39,7 @@ exports.GetItem = async (req, res) => {
 
         responseObject.data.quantity = request.quantity ? request.quantity : 1;
 
-        await res.status(responseObject.status).send(ItemDTO(responseObject.data));
+        await res.status(responseObject.status).json(ItemDTO(responseObject.data));
     }
     catch (err) {
         await res.status(400).send({
