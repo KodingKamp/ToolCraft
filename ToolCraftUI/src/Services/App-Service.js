@@ -2,36 +2,21 @@ exports.GetItem = async (id) => {
     try {
         let resp = await fetch(`http://localhost:8000/api/item/get/${id}`, {method: 'GET'});
 
-        let item = await resp.json();
+        let itemsResp = await resp.json();
 
-        return {
-            id: item.id,
-            name: item.name,
-            quantity: item.quantity
-        };
-    } catch (e) {
-        console.error("An error occured when fetching item.", e);
-    }
-}
-
-exports.GetInitial = async _ => {
-    try {
-        let resp = await fetch('http://localhost:8000/api/item/get/initial', {method: 'GET'});
-
-        let listOfItems = await resp.json();
         let items = [];
-        
-        for(let item of listOfItems) {
+
+        for (let i = 0; i < itemsResp.quantity; i++) {
             items.push({
-                id: item.id,
-                name: item.name,
-                quantity: item.quantity
-            })
+                id: itemsResp.id,
+                name: itemsResp.name,
+
+            });
         }
 
         return items;
-    } catch (error) {
-        console.error("An error occured when fetching initial items.", error)
+    } catch (e) {
+        console.error("An error occured when fetching item.", e);
     }
 }
 
