@@ -81,12 +81,14 @@ const App = () => {
           <button onClick={fetchItem} data-item-id="1">Gather Stones</button>
           <button onClick={combineItems}>Combine 1 stick and 1 stone</button>
         </div>
+      </header>
+      <main>
         <div className="inventory container">
           <h1>Inventory: {items?.length}/20</h1>
           <ul className="items row row-cols-4">
             {items?.map(({id, name}, index) => {
               return (
-                <li data-index={index} key={index} className="col p-4">
+                <li key={index} data-index={index} className="col p-4">
                   <div className="border border-dark p-3 justify-content-center rounded">
                     <div className="row">
                       <span className="d-flex justify-content-end"><i className="fas fa-recycle btn btn-primary" onClick={dismantle} data-item-id={id}></i></span>
@@ -100,7 +102,10 @@ const App = () => {
             })}
           </ul>
         </div>
-      </header>
+      </main>
+      <footer>
+        <span class="fixed-bottom d-flex justify-content-center">&copy; KodingKamp 2020</span>
+      </footer>
     </div>
   )
 }
